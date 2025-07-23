@@ -45,8 +45,11 @@ describe('Article flow', () => {
     cy.task('generateArticle').as('article');
 
     cy.get('@article').then((article) => {
-      return cy.createArticle(article.title, article.description, article.body);
-    }).as('slug');
+      cy.createArticle(article.title, article.description, article.body)
+        .then((slug) => {
+          cy.wrap(slug).as('slug');
+        });
+    });
 
     cy.get('@slug').then((slug) => {
       cy.intercept('DELETE', `/api/articles/${slug}`).as('articleDeleted');

@@ -54,7 +54,7 @@ Cypress.Commands.add('createArticle', (title, description, body) => {
     }
     const authToken = token.value;
 
-    cy.request({
+    return cy.request({
       method: 'POST',
       url: '/api/articles',
       body: {
@@ -69,7 +69,7 @@ Cypress.Commands.add('createArticle', (title, description, body) => {
         Authorization: `Token ${authToken}`
       }
     }).then((response) => {
-      return response.body.article.slug;
+      return cy.wrap(response.body.article.slug);
     });
   });
 });
